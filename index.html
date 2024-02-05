@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POST IT NOTES</title>
+  <style>
+    .container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .postitnote {
+      transition: 0.5s
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .post-it {
+      z-index: 9;
+      position: absolute;
+      fill: rgb(255, 255, 161);
+      stroke: orange;
+      stroke-width: 2px;
+      height: 280px;
+      width: 350px;
+      top: 30%;
+      left: 40%;
+      font-family: monospace;
+    }
+
+    .post-it-header {
+      z-index: 10;
+      cursor: move;
+      padding: 15px;
+    }
+
+    p {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+    <div id="original" class="post-it">
+      <div id="originalheader" style="width:270px;" class="post-it-header" onclick="generateNewNotes()">
+        Try dragging me away, <br /><br /><br />or just click on me.<br />
+      </div>
+      <p contenteditable="true" style="width:270px;">you can also write something on me.</p>
+
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 462.09 366" preserveAspectRatio="none">
+        <path d="M76.84,365C-8.43,273.81,1.34,119.96,1.34,1h383.16c0,118.96,1.5,272.44,75.51,364H76.84Z" />
+      </svg>
+    </div>
+
+
+
+  <script>
+    dragElement(document.getElementById("original"));
+
+    function dragElement(elmnt) {
+      var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+      }
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      }
+
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+
+
+    var colorOptions = [
+      "#FF689F",
+      "#FF832A",
+      "rgb(255, 255, 161)",
+      "#00FF75",
+      "#50FF81",
+      "#9D6EFF"
+    ]
+    note = document.querySelector('.postitnote')
+
+    var body = document.querySelector('body');
+
+    var script = [
+      "I hope something good happens to you today!",
+      "FUN THINGS TO DO TODAY:",
+      "PEOPLE TO SAY I LOVE YOU TO:",
+      "THE BEST GIFT I CAN GIVE MYSELF:",
+      "THINGS I NEED TO STOP THINKING ABOUT:",
+      "✍🏻"
+    ]
+
+    var postitNumber = 0;
+    function generateNewNotes() {
+      var randomColorIndex = Math.floor(Math.random() * colorOptions.length);
+      var randomColorEntry = colorOptions[randomColorIndex];
+  
+
+      body.innerHTML += `
+        <div id="postit${postitNumber}" class="post-it" style="fill: ${randomColorEntry}; stroke: pink;">
+          <div id="postit${postitNumber}header" style="width:270px;" class="post-it-header" onclick="generateNewNotes()">
+          </div>
+          <p contenteditable="true" style="width:270px;">${script[postitNumber]}</p>
+
+          <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 462.09 366" preserveAspectRatio="none">
+            <path d="M76.84,365C-8.43,273.81,1.34,119.96,1.34,1h383.16c0,118.96,1.5,272.44,75.51,364H76.84Z" />
+          </svg>
+        </div>
+      `;
+
+
+      dragElement(document.getElementById("postit"+postitNumber));
+
+      postitNumber = postitNumber + 1;
+    }
+  </script>
+</body>
+
+</html>

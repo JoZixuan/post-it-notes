@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    
+    </style>
+</head>
+<body>
+   
+     <div id="mydiv">
+ 
+    <div id="mydivheader">Click here to move</div>
+    <p>Move</p>
+    <p>this</p>
+    <p>DIV</p>
+  </div>
+
+  <script>var people = [
+    
+  ];
+
+    $("p").click(function(){
+        var newPerson = new Person("John", "Doe", "50", "blue");
+        people.push(newPerson);
+        console.log("A new person has been created!");
+    });
+  </script>
+</body>
+</html>
+
+const newDiv = document.createElement("div");
+newDiv.innerHTML = `
+???
+`;
