@@ -6,10 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POST IT NOTES</title>
   <style>
+    body{
+      background-color: white;
+    }
+    .dark-mode {
+  background-color: black;
+}
     .container {
       width: 100vw;
       height: 100vh;
       position: relative;
+      
     }
 
     .postitnote {
@@ -47,6 +54,9 @@
     p {
       padding-left: 20px;
     }
+    p:focus {
+      outline: unset;
+    }
   </style>
 </head>
 
@@ -56,16 +66,21 @@
       <div id="originalheader" style="width:270px;" class="post-it-header" onclick="generateNewNotes()">
         Try dragging me away, <br /><br /><br />or just click on me.<br />
       </div>
-      <p contenteditable="true" style="width:270px;">you can also write something on me.</p>
+      <p contenteditable="true" style="width:270px;">You can also write something on me.</p>
 
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 462.09 366" preserveAspectRatio="none">
         <path d="M76.84,365C-8.43,273.81,1.34,119.96,1.34,1h383.16c0,118.96,1.5,272.44,75.51,364H76.84Z" />
       </svg>
     </div>
-
-
+    
+    <button onclick="switchbgcolor()"> Light / Dark Mode</button>
 
   <script>
+    function switchbgcolor() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+     }
+     
     dragElement(document.getElementById("original"));
 
     function dragElement(elmnt) {
@@ -129,11 +144,19 @@
       "PEOPLE TO SAY I LOVE YOU TO:",
       "THE BEST GIFT I CAN GIVE MYSELF:",
       "THINGS I NEED TO STOP THINKING ABOUT:",
+      "ENERGY LEVEL TODAY:<br /><br />  MOOD LEVEL TODAY:",
+      "MY MOST IMPORTANT TASK TODAY:",
       "✍🏻"
     ]
 
+
     var postitNumber = 0;
+    var scriptLine = 0;
     function generateNewNotes() {
+      var audio = new Audio('file.wav');
+      audio.play();
+
+
       var randomColorIndex = Math.floor(Math.random() * colorOptions.length);
       var randomColorEntry = colorOptions[randomColorIndex];
   
@@ -142,7 +165,7 @@
         <div id="postit${postitNumber}" class="post-it" style="fill: ${randomColorEntry}; stroke: pink;">
           <div id="postit${postitNumber}header" style="width:270px;" class="post-it-header" onclick="generateNewNotes()">
           </div>
-          <p contenteditable="true" style="width:270px;">${script[postitNumber]}</p>
+          <p contenteditable="true" style="width:270px;">${script[scriptLine]}</p>
 
           <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 462.09 366" preserveAspectRatio="none">
             <path d="M76.84,365C-8.43,273.81,1.34,119.96,1.34,1h383.16c0,118.96,1.5,272.44,75.51,364H76.84Z" />
@@ -151,9 +174,17 @@
       `;
 
 
-      dragElement(document.getElementById("postit"+postitNumber));
+        for (let element of document.querySelectorAll('.post-it')) {
+          dragElement(element);
+        }
 
       postitNumber = postitNumber + 1;
+
+      scriptLine = scriptLine + 1;
+      if (scriptLine == script.length) {
+        scriptLine = script.length-1;
+      }
+
     }
   </script>
 </body>
